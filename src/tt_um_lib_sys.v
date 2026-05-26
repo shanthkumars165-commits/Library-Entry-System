@@ -38,7 +38,7 @@ module tt_um_lib_sys (
     assign uio_oe  = 8'hF0; // Configure lower bits as inputs, upper bits as outputs
 
     // FSM State Transition Sequential Block
-    always @(posedge clk or negedge rst_n) begin
+    always @(posedge clk or megedge rst_n) begin
         if (!rst_n) begin
             current_state    <= STATE_IDLE;
             internal_counter <= 6'b000000;
