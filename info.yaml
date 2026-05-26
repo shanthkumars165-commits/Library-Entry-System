@@ -1,15 +1,18 @@
 yaml_version: 6
 
 project:
-  title:        "4-Stage Library Entry and Collection System"
-  description:  "An FSM-based automated entrance turnstile system that tracks library entry, security validation, and capacity counts."
-  author:       "Raksha S S"
-  language:     "Verilog"
-  clock_hz:     10000000       
-  tiles:        "1x1"          
-  top_module:   "tt_um_lib_sys"
+  title: "4-Stage Library Entry and Collection System"
+  author: "Raksha S S"
+  description: "FSM-based automated entrance and collection controller."
+  language: "Verilog"
+  clock_hz: 10000000
+
+  top_module: "tt_um_lib_sys"
+
   source_files:
     - "tt_um_lib_sys.v"
+
+  tiles: "1x1"
 
 pinout:
   ui[0]: "card_scanned"
