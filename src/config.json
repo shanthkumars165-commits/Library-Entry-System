@@ -71,4 +71,10 @@
 
   "//": "Only export pin area in LEF (without any connected nets)",
   "MAGIC_WRITE_LEF_PINONLY": 1
+} 
+{
+  "TOP_MODULE": "tt_um_lib_sys",
+  "VERILOG_FILES": [
+    "dir::tt_um_lib_sys.v"
+  ]
 }
