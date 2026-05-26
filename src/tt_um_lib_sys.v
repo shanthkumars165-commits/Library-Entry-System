@@ -36,7 +36,16 @@ module tt_um_lib_sys (
     
     // Assign status monitoring to the bidirectional bus
     assign uio_out = {4'b0000, current_state, wrapper_anchor, 1'b0};
-    assign uio_oe  = 8'hF0; // Configure lower bits as inputs, upper bits as outputs
+
+    // Explicit individual pin assignments to ensure clean physical routing paths within the die area
+    assign uio_oe[0] = 1'b0; // Configured as input
+    assign uio_oe[1] = 1'b0; // Configured as input
+    assign uio_oe[2] = 1'b1; // Configured as output for current_state_0
+    assign uio_oe[3] = 1'b1; // Configured as output for current_state_1
+    assign uio_oe[4] = 1'b0; // Configured as input
+    assign uio_oe[5] = 1'b0; // Configured as input
+    assign uio_oe[6] = 1'b0; // Configured as input
+    assign uio_oe[7] = 1'b0; // Configured as input
 
     // FSM State Transition Sequential Block
     always @(posedge clk or negedge rst_n) begin
