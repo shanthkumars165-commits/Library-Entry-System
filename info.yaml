@@ -1,38 +1,44 @@
+# Tiny Tapeout project information
+yaml_version: [4]
+
 project:
   title:        "4-Stage Library Entry and Collection System"
   description:  "An FSM-based automated entrance turnstile system that tracks library entry, security validation, and capacity counts."
   author:       "Raksha S S"
   language:     "Verilog"
-  clock_hz:     10000000       
-  tiles_x:      1
-  tiles_y:      1
+  clock_hz:     10000000       # 10 MHz default clock internal reference
+  tiles:        "1x1"          # Dimensions of the design space occupied
   top_module:   "tt_um_lib_sys"
+  source_files:
+    - "tt_um_lib_sys.v"
 
-documentation:
-  inputs:
-    - "card_scanned (ui_in[0])"
-    - "sensor_tripped (ui_in[1])"
-    - "clear_override (ui_in[2])"
-    - "none"
-    - "none"
-    - "none"
-    - "none"
-    - "none"
-  outputs:
-    - "gate_lock (uo_out[0])"
-    - "security_alarm (uo_out[1])"
-    - "capacity_count bit 0 (uo_out[2])"
-    - "capacity_count bit 1 (uo_out[3])"
-    - "capacity_count bit 2 (uo_out[4])"
-    - "capacity_count bit 3 (uo_out[5])"
-    - "capacity_count bit 4 (uo_out[6])"
-    - "capacity_count bit 5 (uo_out[7])"
-  bidirectional:
-    - "none"
-    - "none"
-    - "current_state bit 0 (uio_out[2])"
-    - "current_state bit 1 (uio_out[3])"
-    - "none"
-    - "none"
-    - "none"
-    - "none"
+pinout:
+  # Dedicated inputs
+  ui[0]: "card_scanned"
+  ui[1]: "sensor_tripped"
+  ui[2]: "clear_override"
+  ui[3]: "none"
+  ui[4]: "none"
+  ui[5]: "none"
+  ui[6]: "none"
+  ui[7]: "none"
+
+  # Dedicated outputs
+  uo[0]: "gate_lock"
+  uo[1]: "security_alarm"
+  uo[2]: "capacity_count_0"
+  uo[3]: "capacity_count_1"
+  uo[4]: "capacity_count_2"
+  uo[5]: "capacity_count_3"
+  uo[6]: "capacity_count_4"
+  uo[7]: "capacity_count_5"
+
+  # Bidirectional pins
+  uio[0]: "none"
+  uio[1]: "none"
+  uio[2]: "current_state_0"
+  uio[3]: "current_state_1"
+  uio[4]: "none"
+  uio[5]: "none"
+  uio[6]: "none"
+  uio[7]: "none"
