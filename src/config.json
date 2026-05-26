@@ -1,0 +1,15 @@
+{
+  "TOP_MODULE": "tt_um_lib_sys",
+
+  "VERILOG_FILES": [
+    "dir::tt_um_lib_sys.v"
+  ],
+
+  "CLOCK_PORT": "clk",
+
+  "FP_PDN_AUTO_ADJUST": true,
+
+  "PL_TARGET_DENSITY": 0.40,
+
+  "RUN_CTS": 0
+}
