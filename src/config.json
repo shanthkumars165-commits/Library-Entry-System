@@ -2,5 +2,8 @@
   "TOP_MODULE": "tt_um_lib_sys",
   "VERILOG_FILES": [
     "dir::tt_um_lib_sys.v"
-  ]
+  ],
+  "CLOCK_PERIOD": 10.0,
+  "CLOCK_PORT": "clk",
+  "CLOCK_NET": "clk"
 }
