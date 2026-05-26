@@ -1,90 +1,82 @@
 `default_nettype none
 
-// Tiny Tapeout Library System ASIC Submission
 module tt_um_lib_sys (
-    input  wire [7:0] ui_in,    // Dedicated inputs: ui_in[0]=card_scan, ui_in[1]=sensor_trip, ui_in[2]=clear_count
-    output wire [7:0] uo_out,   // Dedicated outputs: uo_out[0]=gate_lock, uo_out[1]=alarm, uo_out[7:2]=capacity_count
-    input  wire [7:0] uio_in,   // IOs: Input path
-    output wire [7:0] uio_out,  // IOs: Output path
-    output wire [7:0] uio_oe,   // IOs: Enable path
-    input  wire       ena,      // Always 1 when design is selected
-    input  wire       clk,      // System clock
-    input  wire       rst_n     // Active-low master hardware reset
+    input  wire [7:0] ui_in,
+    output wire [7:0] uo_out,
+    input  wire [7:0] uio_in,
+    output wire [7:0] uio_out,
+    output wire [7:0] uio_oe,
+    input  wire       ena,
+    input  wire       clk,
+    input  wire       rst_n
 );
 
-    // State Encoding declarations
-    localparam [1:0] STATE_IDLE       = 2'b00,
-                     STATE_SCAN       = 2'b01,
-                     STATE_ACCESS     = 2'b10,
-                     STATE_COLLECT    = 2'b11;
+    localparam [1:0]
+        STATE_IDLE    = 2'b00,
+        STATE_SCAN    = 2'b01,
+        STATE_ACCESS  = 2'b10,
+        STATE_COLLECT = 2'b11;
 
-    reg [1:0] current_state, next_state;
-    reg [5:0] internal_counter; // Tracks library count up to 63 students
+    reg [1:0] current_state;
+    reg [1:0] next_state;
 
-    // Connect inputs to readable wire labels
+    reg [5:0] internal_counter;
+
     wire card_scanned   = ui_in[0];
     wire sensor_tripped = ui_in[1];
     wire clear_override = ui_in[2];
 
-    // Continuous output pin assignments
-    assign uo_out[0]   = (current_state == STATE_ACCESS); // Unlock gate signal
-    assign uo_out[1]   = (current_state == STATE_SCAN) && sensor_tripped; // Security alert flag
-    assign uo_out[7:2] = internal_counter;                // Send count to output pins
-    
-    // Static assignment for bidirectional ports to minimize gate usage completely
-    assign uio_out     = 8'b00000000;
+    // Outputs
+    assign uo_out[0]   = (current_state == STATE_ACCESS);
+    assign uo_out[1]   = (current_state == STATE_SCAN) && sensor_tripped;
+    assign uo_out[7:2] = internal_counter;
 
-    // Explicit individual pin assignments to ensure clean physical routing paths within the die area
-    assign uio_oe[0] = 1'b0; // Configured as input
-    assign uio_oe[1] = 1'b0; // Configured as input
-    assign uio_oe[2] = 1'b0; // Configured as input
-    assign uio_oe[3] = 1'b0; // Configured as input
-    assign uio_oe[4] = 1'b0; // Configured as input
-    assign uio_oe[5] = 1'b0; // Configured as input
-    assign uio_oe[6] = 1'b0; // Configured as input
-    assign uio_oe[7] = 1'b0; // Configured as input
+    // Unused bidirectional pins
+    assign uio_out = 8'b00000000;
+    assign uio_oe  = 8'b00000000;
 
-    // FSM State Transition Sequential Block
+    // Sequential logic
     always @(posedge clk or negedge rst_n) begin
         if (!rst_n) begin
             current_state    <= STATE_IDLE;
             internal_counter <= 6'b000000;
         end else begin
-            if (ena) begin
-                current_state <= next_state;
-                
-                // Increment visitor register when passing successfully through the collection state
-                if (current_state == STATE_COLLECT) begin
-                    internal_counter <= internal_counter + 1'b1;
-                end else if (clear_override) begin
-                    internal_counter <= 6'b000000;
-                end
-            end
+            current_state <= next_state;
+
+            if (clear_override)
+                internal_counter <= 6'b000000;
+            else if (current_state == STATE_COLLECT)
+                internal_counter <= internal_counter + 1'b1;
         end
     end
 
-    // Next State Combinational Logic Block
+    // Next-state logic
     always @(*) begin
+        next_state = current_state;
+
         case (current_state)
+
             STATE_IDLE: begin
-                if (card_scanned) next_state = STATE_SCAN;
-                else              next_state = STATE_IDLE;
+                if (card_scanned)
+                    next_state = STATE_SCAN;
             end
-            
+
             STATE_SCAN: begin
-                if (sensor_tripped) next_state = STATE_ACCESS;
-                else                next_state = STATE_SCAN;
+                if (sensor_tripped)
+                    next_state = STATE_ACCESS;
             end
-            
+
             STATE_ACCESS: begin
                 next_state = STATE_COLLECT;
             end
-            
+
             STATE_COLLECT: begin
                 next_state = STATE_IDLE;
             end
-            
-            default: next_state = STATE_IDLE;
+
+            default: begin
+                next_state = STATE_IDLE;
+            end
         endcase
     end
 
