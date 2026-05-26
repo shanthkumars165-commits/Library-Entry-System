@@ -1,6 +1,6 @@
-// Tiny Tapeout Library System ASIC Submission
 `default_nettype none
 
+// Tiny Tapeout Library System ASIC Submission
 module tt_um_lib_sys (
     input  wire [7:0] ui_in,    // Dedicated inputs: ui_in[0]=card_scan, ui_in[1]=sensor_trip, ui_in[2]=clear_count
     output wire [7:0] uo_out,   // Dedicated outputs: uo_out[0]=gate_lock, uo_out[1]=alarm, uo_out[7:2]=capacity_count
@@ -39,7 +39,7 @@ module tt_um_lib_sys (
     assign uio_oe  = 8'hF0; // Configure lower bits as inputs, upper bits as outputs
 
     // FSM State Transition Sequential Block
-    always @(posedge clk or megedge rst_n) begin
+    always @(posedge clk or negedge rst_n) begin
         if (!rst_n) begin
             current_state    <= STATE_IDLE;
             internal_counter <= 6'b000000;
