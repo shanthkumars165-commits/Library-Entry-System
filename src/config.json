@@ -6,7 +6,6 @@
   ],
 
   "CLOCK_PORT": "clk",
-  "CLOCK_NET": "clk",
   "CLOCK_PERIOD": 100,
 
   "FP_PDN_AUTO_ADJUST": true,
