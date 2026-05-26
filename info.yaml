@@ -1,5 +1,5 @@
 # Tiny Tapeout project information
-yaml_version: [6]
+yaml_version: 6
 
 project:
   title:        "4-Stage Library Entry and Collection System"
