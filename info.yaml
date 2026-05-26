@@ -1,4 +1,3 @@
-# Tiny Tapeout project information
 yaml_version: 6
 
 project:
@@ -6,14 +5,13 @@ project:
   description:  "An FSM-based automated entrance turnstile system that tracks library entry, security validation, and capacity counts."
   author:       "Raksha S S"
   language:     "Verilog"
-  clock_hz:     10000000       # 10 MHz default clock internal reference
-  tiles:        "1x1"          # Dimensions of the design space occupied
+  clock_hz:     10000000       
+  tiles:        "1x1"          
   top_module:   "tt_um_lib_sys"
   source_files:
     - "tt_um_lib_sys.v"
 
 pinout:
-  # Dedicated inputs
   ui[0]: "card_scanned"
   ui[1]: "sensor_tripped"
   ui[2]: "clear_override"
@@ -23,7 +21,6 @@ pinout:
   ui[6]: "none"
   ui[7]: "none"
 
-  # Dedicated outputs
   uo[0]: "gate_lock"
   uo[1]: "security_alarm"
   uo[2]: "capacity_count_0"
@@ -33,7 +30,6 @@ pinout:
   uo[6]: "capacity_count_4"
   uo[7]: "capacity_count_5"
 
-  # Bidirectional pins
   uio[0]: "none"
   uio[1]: "none"
   uio[2]: "current_state_0"
