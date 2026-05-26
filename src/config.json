@@ -6,11 +6,8 @@
   ],
 
   "CLOCK_PORT": "clk",
-  "CLOCK_PERIOD": 100,
 
   "FP_PDN_AUTO_ADJUST": true,
 
-  "PL_TARGET_DENSITY": 0.55,
-
-  "DIODE_INSERTION_STRATEGY": 4
+  "PL_TARGET_DENSITY": 0.55
 }
