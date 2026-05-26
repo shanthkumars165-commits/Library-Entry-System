@@ -26,22 +26,19 @@ module tt_um_lib_sys (
     wire sensor_tripped = ui_in[1];
     wire clear_override = ui_in[2];
 
-    // Combinational block mixing bidirectional lines to prevent optimization pruning
-    wire wrapper_anchor = ena ^ (^uio_in) ^ (^ui_in[7:3]);
-
     // Continuous output pin assignments
     assign uo_out[0]   = (current_state == STATE_ACCESS); // Unlock gate signal
     assign uo_out[1]   = (current_state == STATE_SCAN) && sensor_tripped; // Security alert flag
     assign uo_out[7:2] = internal_counter;                // Send count to output pins
     
-    // Assign status monitoring to the bidirectional bus
-    assign uio_out = {4'b0000, current_state, wrapper_anchor, 1'b0};
+    // Static assignment for bidirectional ports to minimize gate usage completely
+    assign uio_out     = 8'b00000000;
 
     // Explicit individual pin assignments to ensure clean physical routing paths within the die area
     assign uio_oe[0] = 1'b0; // Configured as input
     assign uio_oe[1] = 1'b0; // Configured as input
-    assign uio_oe[2] = 1'b1; // Configured as output for current_state_0
-    assign uio_oe[3] = 1'b1; // Configured as output for current_state_1
+    assign uio_oe[2] = 1'b0; // Configured as input
+    assign uio_oe[3] = 1'b0; // Configured as input
     assign uio_oe[4] = 1'b0; // Configured as input
     assign uio_oe[5] = 1'b0; // Configured as input
     assign uio_oe[6] = 1'b0; // Configured as input
@@ -53,13 +50,15 @@ module tt_um_lib_sys (
             current_state    <= STATE_IDLE;
             internal_counter <= 6'b000000;
         end else begin
-            current_state <= next_state;
-            
-            // Increment visitor register when passing successfully through the collection state
-            if (current_state == STATE_COLLECT) begin
-                internal_counter <= internal_counter + 1'b1;
-            end else if (clear_override) begin
-                internal_counter <= 6'b000000;
+            if (ena) begin
+                current_state <= next_state;
+                
+                // Increment visitor register when passing successfully through the collection state
+                if (current_state == STATE_COLLECT) begin
+                    internal_counter <= internal_counter + 1'b1;
+                end else if (clear_override) begin
+                    internal_counter <= 6'b000000;
+                end
             end
         end
     end
