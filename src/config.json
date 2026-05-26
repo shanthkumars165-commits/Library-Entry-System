@@ -6,7 +6,6 @@
   "CLOCK_PERIOD": 10.0,
   "CLOCK_PORT": "clk",
   "CLOCK_NET": "clk",
-  "FP_SIZING": "absolute",
-  "DIE_AREA": "0 0 168.36 168.36",
-  "CORE_AREA": "5.52 5.52 162.84 162.84"
+  "FP_SIZING": "relative",
+  "PL_TARGET_DENSITY": 0.30
 }
