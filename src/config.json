@@ -4,8 +4,5 @@
     "dir::tt_um_lib_sys.v"
   ],
   "CLOCK_PERIOD": 10.0,
-  "CLOCK_PORT": "clk",
-  "CLOCK_NET": "clk",
-  "SYNTH_STRATEGY": "DELAY 0",
-  "PL_TARGET_DENSITY": 0.20
+  "CLOCK_PORT": "clk"
 }
